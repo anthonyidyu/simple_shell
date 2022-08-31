@@ -1,4 +1,4 @@
-include "main.h"
+#include "main.h"
 
 /**
  * copy_info - copies info to create
