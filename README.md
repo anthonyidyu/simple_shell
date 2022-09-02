@@ -1,4 +1,3 @@
+Simple Shell
 
-Simple Shell Project
-
-{https://github.com/anthonyidyu/simple_shell#simple-shell}
+--Author: Aysanew Yonas | May 6 2022
