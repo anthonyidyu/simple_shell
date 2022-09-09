@@ -1,3 +1,1 @@
-Simple Shell
-
---Author: Aysanew Yonas | May 6 2022
+This Repo will contain files for alx task on simple shell done by Esther and Anthony
