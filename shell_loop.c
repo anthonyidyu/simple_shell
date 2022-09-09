@@ -1,77 +1,87 @@
-#include "main.h"
+#include "shell.h"
 
 /**
- * without_comment - deletes comments from the input
+ * _strcpy - copies a string
+ * @dest: the destination
+ * @src: the source
  *
- * @in: input string
- * Return: input without comments
+ * Return: pointer to destination
  */
-char *without_comment(char *in)
+char *_strcpy(char *dest, char *src)
 {
-	int i, up_to;
+	int i = 0;
 
-	up_to = 0;
-	for (i = 0; in[i]; i++)
+	if (dest == src || src == 0)
+		return (dest);
+	while (src[i])
 	{
-		if (in[i] == '#')
-		{
-			if (i == 0)
-			{
-				free(in);
-				return (NULL);
-			}
-
-			if (in[i - 1] == ' ' || in[i - 1] == '\t' || in[i - 1] == ';')
-				up_to = i;
-		}
+		dest[i] = src[i];
+		i++;
 	}
-
-	if (up_to != 0)
-	{
-		in = _realloc(in, i, up_to + 1);
-		in[up_to] = '\0';
-	}
-
-	return (in);
+	dest[i] = 0;
+	return (dest);
 }
 
 /**
- * shell_loop - Loop of shell
- * @datash: data relevant (av, input, args)
+ * _strdup - duplicates a string
+ * @str: the string to duplicate
  *
- * Return: no return.
+ * Return: pointer to the duplicated string
  */
-void shell_loop(data_shell *datash)
+char *_strdup(const char *str)
 {
-	int loop, i_eof;
-	char *input;
+	int length = 0;
+	char *ret;
 
-	loop = 1;
-	while (loop == 1)
+	if (str == NULL)
+		return (NULL);
+	while (*str++)
+		length++;
+	ret = malloc(sizeof(char) * (length + 1));
+	if (!ret)
+		return (NULL);
+	for (length++; length--;)
+		ret[length] = *--str;
+	return (ret);
+}
+
+/**
+ *_puts - prints an input string
+ *@str: the string to be printed
+ *
+ * Return: Nothing
+ */
+void _puts(char *str)
+{
+	int i = 0;
+
+	if (!str)
+		return;
+	while (str[i] != '\0')
 	{
-		write(STDIN_FILENO, "^-^ ", 4);
-		input = read_line(&i_eof);
-		if (i_eof != -1)
-		{
-			input = without_comment(input);
-			if (input == NULL)
-				continue;
-
-			if (check_syntax_error(datash, input) == 1)
-			{
-				datash->status = 2;
-				free(input);
-				continue;
-			}
-			input = rep_var(input, datash);
-			loop = split_commands(datash, input);
-			datash->counter += 1;
-			free(input);
-		}
-		else
-		{
-			loop = 0;
-			free(input);
-		}
+		_putchar(str[i]);
+		i++;
 	}
+}
+
+/**
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
+ */
+int _putchar(char c)
+{
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(1, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
 }
